@@ -1,4 +1,4 @@
-package mcnc.survwey.global.exception;
+package mcnc.survwey.global.exception.custom;
 
 import lombok.Builder;
 import lombok.Data;
