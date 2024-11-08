@@ -3,6 +3,7 @@ package mcnc.survwey.api.authentication.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mcnc.survwey.api.authentication.dto.AuthDTO;
+import mcnc.survwey.api.authentication.dto.ChangePasswordDTO;
 import mcnc.survwey.api.authentication.dto.ModifyDTO;
 import mcnc.survwey.domain.user.User;
 import mcnc.survwey.domain.user.UserRepository;
@@ -61,5 +62,15 @@ public class AuthService {
         userRepository.save(user);
     }
 
+
+    public void changePassword(ChangePasswordDTO changePasswordDTO){
+        User user = userRepository.findById(changePasswordDTO.getEmail())
+                .orElseThrow(() ->
+                        new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_EMAIL));
+
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword()));
+
+        userRepository.save(user);
+    }
 
 }
