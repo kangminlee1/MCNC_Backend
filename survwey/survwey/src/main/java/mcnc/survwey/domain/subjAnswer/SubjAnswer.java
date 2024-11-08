@@ -19,17 +19,16 @@ public class SubjAnswer {
     @Column(nullable = false)
     private Long subjId;
 
-    @Column(nullable = false)
     private LocalDateTime writtenDate;
 
     @Column(columnDefinition = "TEXT")
     private String response;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quesId", nullable = false)
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email", nullable = false)
     private User user;
 

@@ -1,15 +1,18 @@
 package mcnc.survwey.domain.survey;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import mcnc.survwey.domain.user.User;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "survey")
 public class Survey {
 
@@ -30,8 +33,14 @@ public class Survey {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email", nullable = false)
     private User user;
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.createDate == null) {
+            this.createDate = LocalDateTime.now();
+        }
+    }
 }

@@ -1,16 +1,22 @@
 package mcnc.survwey.domain.question;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import mcnc.survwey.domain.questionType.QuestionType;
+import mcnc.survwey.domain.enums.QuestionType;
+import mcnc.survwey.domain.selection.Selection;
 import mcnc.survwey.domain.survey.Survey;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "question")
 public class Question {
     @Id
@@ -24,12 +30,18 @@ public class Question {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
 
-    @ManyToOne
-    @JoinColumn(name = "typeId", nullable = false)
-    private QuestionType questionType;
-    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private QuestionType type;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createDate == null) {
+            this.createDate = LocalDateTime.now();
+        }
+    }
 }
