@@ -2,6 +2,7 @@ package mcnc.survwey.domain.question;
 
 import lombok.RequiredArgsConstructor;
 import mcnc.survwey.api.survey.dto.QuestionDTO;
+import mcnc.survwey.domain.enums.QuestionType;
 import mcnc.survwey.domain.survey.Survey;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public Question addQuestionToSurvey(QuestionDTO questionDTO, Survey createdSurvey) {
+    public Question buildAndSaveQuestion(QuestionDTO questionDTO, Survey createdSurvey) {
         Question createdQuestion = Question.builder()
                 .body(questionDTO.getBody())
                 .type(questionDTO.getType())
