@@ -3,6 +3,8 @@ package mcnc.survwey.api.authentication.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mcnc.survwey.api.authentication.dto.AuthDTO;
+import mcnc.survwey.api.authentication.dto.ChangePasswordDTO;
+import mcnc.survwey.api.authentication.dto.ModifyDTO;
 import mcnc.survwey.domain.user.User;
 import mcnc.survwey.domain.user.UserRepository;
 import mcnc.survwey.global.exception.custom.CustomException;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -27,9 +30,9 @@ public class AuthService {
      *
      * @param authDTO
      */
-    @Transactional
+
     public void registerUser(AuthDTO authDTO) {
-        if (userRepository.existsById(authDTO.getEmail())) {
+        if (userRepository.existsById(authDTO.getEmail())) {//해당 이메일 존재
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_ALREADY_EXISTS);
         }
         userRepository.save(User.builder()
@@ -41,6 +44,33 @@ public class AuthService {
                 .gender(authDTO.getGender())
                 .build()
         );
+    }
+
+    /**
+     * 프로필 수정
+     * @param modifyDTO
+     */
+    public void modifyUser(ModifyDTO modifyDTO){
+
+        User user = userRepository.findById(modifyDTO.getEmail())
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_ALREADY_EXISTS));
+
+        user.setName(modifyDTO.getName());
+        user.setGender(modifyDTO.getGender());
+        user.setBirth(modifyDTO.getBirth());
+
+        userRepository.save(user);
+    }
+
+
+    public void changePassword(ChangePasswordDTO changePasswordDTO){
+        User user = userRepository.findById(changePasswordDTO.getEmail())
+                .orElseThrow(() ->
+                        new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_EMAIL));
+
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword()));
+
+        userRepository.save(user);
     }
 
 }
