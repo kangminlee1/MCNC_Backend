@@ -16,6 +16,6 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findById(email)
-                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_EMAIL));
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_ID));
     }
 }
