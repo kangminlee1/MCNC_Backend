@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MCNC_Backend.iml" filepath="$PROJECT_DIR$/.idea/MCNC_Backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/survwey.main.iml" filepath="$PROJECT_DIR$/.idea/modules/survwey.main.iml" />
     </modules>
   </component>
 </project>
