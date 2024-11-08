@@ -18,10 +18,9 @@ public class ObjAnswer {
     @Column(nullable = false)
     private Long objId;
 
-    @Column(nullable = false)
     private LocalDateTime writtenDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email", nullable = false)
     private User user;
 
@@ -29,7 +28,7 @@ public class ObjAnswer {
     private String etcAnswer;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "ques_id", referencedColumnName = "ques_id"),
             @JoinColumn(name = "sequence", referencedColumnName = "sequence")

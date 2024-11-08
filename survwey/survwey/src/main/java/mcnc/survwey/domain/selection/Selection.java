@@ -1,17 +1,25 @@
 package mcnc.survwey.domain.selection;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mcnc.survwey.domain.question.Question;
+import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Data
+@Slf4j
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "selection")
-public class Selection {
+public class Selection implements Persistable<SelectionId> {
 
     @EmbeddedId
     private SelectionId id;
@@ -22,8 +30,25 @@ public class Selection {
     @Column(nullable = false)
     private LocalDateTime createDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ques_id", insertable = false, updatable = false)
     private Question question;
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.createDate == null) {
+            this.createDate = LocalDateTime.now();
+        }
+    }
+
+    /**
+     * 복합키일 경우 insert시 select 쿼리가 나가는 문제 해결
+     * - createDate가 null일 경우 새로운 Entity임
+     * - createDate가 null이 아닐 경우 새로운 Entity가 아님
+     * @return
+     */
+    @Override
+    public boolean isNew() {
+        return createDate == null;
+    }
 }
