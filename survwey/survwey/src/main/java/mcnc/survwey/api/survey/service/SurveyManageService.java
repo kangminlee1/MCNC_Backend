@@ -38,4 +38,8 @@ public class SurveyManageService {
         return createdSurvey;
     }
 
+    public boolean deleteSurvey(Long surveyId) {
+        return surveyService.deleteSurveyById(surveyId);
+    }
+
 }

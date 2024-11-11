@@ -11,6 +11,8 @@ import mcnc.survwey.global.config.SessionContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+
 
 @Slf4j
 @RestController
@@ -29,5 +31,13 @@ public class SurveyManageController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @DeleteMapping("/delete/{surveyId}")
+    public ResponseEntity<Object> deleteSurvey(@PathVariable("surveyId") Long surveyId) {
+        if(surveyManageService.deleteSurvey(surveyId)) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.badRequest().body(Collections.singletonMap("errorMessage", "해당 아이디의 설문이 존재하지 않습니다."));
     }
 }
