@@ -36,7 +36,7 @@ public class Survey {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @PrePersist

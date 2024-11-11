@@ -21,7 +21,7 @@ public class ObjAnswer {
     private LocalDateTime writtenDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @Column(columnDefinition = "TEXT")

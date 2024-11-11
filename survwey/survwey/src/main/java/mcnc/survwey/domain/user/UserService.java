@@ -15,7 +15,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User findByEmail(String email) {
-        return userRepository.findById(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_EMAIL));
+    }
+
+    public User findByUserId(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_ID));
     }
 }
