@@ -1,15 +1,19 @@
 package mcnc.survwey.domain.selection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mcnc.survwey.domain.objAnswer.ObjAnswer;
 import mcnc.survwey.domain.question.Question;
 import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -33,6 +37,11 @@ public class Selection implements Persistable<SelectionId> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ques_id", insertable = false, updatable = false)
     private Question question;
+
+    @OneToMany(mappedBy = "selection", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    private List<ObjAnswer> objAnswerList = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

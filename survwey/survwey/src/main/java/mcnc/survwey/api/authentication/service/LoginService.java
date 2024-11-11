@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static mcnc.survwey.global.config.SessionConst.LOGIN_USER;
+import static mcnc.survwey.global.config.AuthInterceptor.LOGIN_USER;
 
 @Slf4j
 @Service
@@ -24,10 +24,10 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
 
     public boolean loginAndCreateSession(LoginDTO loginDTO, HttpServletRequest request) {
-        User foundUser = userService.findByEmail(loginDTO.getEmail());
+        User foundUser = userService.findByUserId(loginDTO.getUserId());
         if (passwordEncoder.matches(loginDTO.getPassword(), foundUser.getPassword())) {
             HttpSession session = request.getSession();
-            session.setAttribute(LOGIN_USER, loginDTO.getEmail());
+            session.setAttribute(LOGIN_USER, loginDTO.getUserId());
             return true;
         } else {
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.INVALID_PASSWORD);

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mcnc.survwey.api.survey.dto.UserCreatedSurveyDTO;
 import mcnc.survwey.api.survey.service.SurveyInquiryService;
+import mcnc.survwey.global.config.SessionContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,10 @@ public class SurveyInquiryController {
 
     private final SurveyInquiryService surveyInquiryService;
 
-    @GetMapping("/inquiry/created/{email}")
-    public ResponseEntity<Map<String, List<UserCreatedSurveyDTO>>> inquiryUserCreatedSurveyList(@PathVariable(value = "email") String email) {
-        List<UserCreatedSurveyDTO> userCreatedSurveyList = surveyInquiryService.getUserCreatedSurveyList(email);
+    @GetMapping("/inquiry/created")
+    public ResponseEntity<Map<String, List<UserCreatedSurveyDTO>>> inquiryUserCreatedSurveyList() {
+        String userId = SessionContext.getCurrentUser();
+        List<UserCreatedSurveyDTO> userCreatedSurveyList = surveyInquiryService.getUserCreatedSurveyList(userId);
         return ResponseEntity.ok(Collections.singletonMap("surveyList", userCreatedSurveyList));
     }
 
