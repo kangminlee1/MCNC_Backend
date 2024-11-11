@@ -31,5 +31,4 @@ public class Respond {
     @JoinColumn(name = "surveyId", nullable = false)
     private Survey survey;
 
-
 }
