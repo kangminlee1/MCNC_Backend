@@ -25,7 +25,7 @@ public class LoginController {
     public ResponseEntity<Object> loginUser(@RequestBody @Valid LoginDTO loginDTO, HttpServletRequest request) {
         boolean loginResult = loginService.loginAndCreateSession(loginDTO, request);
         if (loginResult) {
-            return ResponseEntity.ok(Collections.singletonMap("email", loginDTO.getEmail()));
+            return ResponseEntity.ok(Collections.singletonMap("userId", loginDTO.getUserId()));
         }
         return ResponseEntity.badRequest().body(null);
     }
