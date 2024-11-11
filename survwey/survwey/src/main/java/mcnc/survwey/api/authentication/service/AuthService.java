@@ -32,10 +32,15 @@ public class AuthService {
      */
 
     public void registerUser(AuthDTO authDTO) {
+        if(userRepository.existsById(authDTO.getUserId())){//해당 아이디 이미 존재
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_ID_ALREADY_EXISTS);
+        }
+
         if (userRepository.existsById(authDTO.getEmail())) {//해당 이메일 존재
-            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_ALREADY_EXISTS);
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_EMAIL_ALREADY_EXISTS);
         }
         userRepository.save(User.builder()
+                .userId(authDTO.getUserId())
                 .email(authDTO.getEmail())
                 .password(passwordEncoder.encode(authDTO.getPassword()))
                 .name(authDTO.getName())
@@ -52,9 +57,18 @@ public class AuthService {
      */
     public void modifyUser(ModifyDTO modifyDTO){
 
-        User user = userRepository.findById(modifyDTO.getEmail())
-                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_ALREADY_EXISTS));
+        User user = userRepository.findById(modifyDTO.getUserId())
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_ID));
 
+        if(modifyDTO.getName().isEmpty() || modifyDTO.getName().isBlank()){
+            modifyDTO.setName(user.getName());
+        }
+        if(modifyDTO.getGender().getValue().isEmpty() || modifyDTO.getGender().getValue().isBlank()){
+            modifyDTO.setGender(user.getGender());
+        }
+        if(modifyDTO.getBirth() == null){
+            modifyDTO.setBirth(user.getBirth());
+        }
         user.setName(modifyDTO.getName());
         user.setGender(modifyDTO.getGender());
         user.setBirth(modifyDTO.getBirth());
@@ -63,10 +77,14 @@ public class AuthService {
     }
 
 
+    /**
+     * 비밀번호 변경
+     * @param changePasswordDTO
+     */
     public void changePassword(ChangePasswordDTO changePasswordDTO){
-        User user = userRepository.findById(changePasswordDTO.getEmail())
+        User user = userRepository.findById(changePasswordDTO.getUserId())
                 .orElseThrow(() ->
-                        new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_EMAIL));
+                        new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_ID));
 
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword()));
 
