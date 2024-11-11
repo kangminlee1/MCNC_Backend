@@ -26,7 +26,7 @@ public class SurveyManageService {
 
     @Transactional
     public Survey createSurveyWithDetails(CreateSurveyDTO createSurveyDTO) {
-        User creator = userService.findByEmail(createSurveyDTO.getEmail());
+        User creator = userService.findByUserId(createSurveyDTO.getUserId());
         Survey createdSurvey = surveyService.initializeSurvey(createSurveyDTO, creator);
         createSurveyDTO.getQuestionList()
                 .forEach(questionDTO -> {

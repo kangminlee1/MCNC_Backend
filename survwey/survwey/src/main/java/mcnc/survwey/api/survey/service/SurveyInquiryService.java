@@ -17,7 +17,7 @@ public class SurveyInquiryService {
     private final SurveyRepository surveyRepository;
 
     public List<UserCreatedSurveyDTO> getUserCreatedSurveyList(String email) {
-        return surveyRepository.findByUser_Email(email)
+        return surveyRepository.findByUser_UserId(email)
                 .stream().map(UserCreatedSurveyDTO::new)
                 .toList();
     }
