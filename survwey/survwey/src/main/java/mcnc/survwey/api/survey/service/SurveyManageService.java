@@ -1,5 +1,6 @@
 package mcnc.survwey.api.survey.service;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import mcnc.survwey.domain.user.User;
 import mcnc.survwey.domain.user.UserService;
 import org.springframework.stereotype.Service;
 
+import static mcnc.survwey.global.config.SessionConst.LOGIN_USER;
+
 
 @Service
 @Slf4j
@@ -25,8 +28,8 @@ public class SurveyManageService {
     private final UserService userService;
 
     @Transactional
-    public Survey createSurveyWithDetails(CreateSurveyDTO createSurveyDTO) {
-        User creator = userService.findByUserId(createSurveyDTO.getUserId());
+    public Survey createSurveyWithDetails(CreateSurveyDTO createSurveyDTO, String userId) {
+        User creator = userService.findByUserId(userId);
         Survey createdSurvey = surveyService.initializeSurvey(createSurveyDTO, creator);
         createSurveyDTO.getQuestionList()
                 .forEach(questionDTO -> {

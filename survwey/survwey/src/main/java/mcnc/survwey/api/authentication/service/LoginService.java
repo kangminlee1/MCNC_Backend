@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static mcnc.survwey.global.config.SessionConst.LOGIN_USER;
+import static mcnc.survwey.global.config.AuthInterceptor.LOGIN_USER;
 
 @Slf4j
 @Service
