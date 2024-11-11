@@ -23,7 +23,7 @@ public class AuthController {
     @PostMapping("/join")
     public ResponseEntity<Object> register(@Valid @RequestBody AuthDTO authDTO) {
         authService.registerUser(authDTO);
-        return ResponseEntity.ok(authDTO.getEmail());
+        return ResponseEntity.ok(authDTO.getUserId());
     }
 
     @PostMapping("/modify")
@@ -31,7 +31,7 @@ public class AuthController {
 
         authService.modifyUser(modifyDTO);
 
-        return ResponseEntity.ok(modifyDTO.getEmail());
+        return ResponseEntity.ok(modifyDTO.getUserId());
     }
 
     @PostMapping("/changePassword")
