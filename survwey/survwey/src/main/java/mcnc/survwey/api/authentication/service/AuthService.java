@@ -36,9 +36,12 @@ public class AuthService {
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_ID_ALREADY_EXISTS);
         }
 
-        if (userRepository.existsById(authDTO.getEmail())) {//해당 이메일 존재
+        if (userRepository.existsByEmail(authDTO.getEmail())) {//해당 이메일 존재
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_EMAIL_ALREADY_EXISTS);
         }
+
+
+
         userRepository.save(User.builder()
                 .userId(authDTO.getUserId())
                 .email(authDTO.getEmail())
