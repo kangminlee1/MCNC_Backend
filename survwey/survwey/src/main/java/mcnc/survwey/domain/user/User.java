@@ -17,7 +17,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "user")
 public class User {
+
     @Id
+    @Column(nullable = false, unique = true)
+    private String userId;
+
     @Column(nullable = false, unique = true)
     private String email;
 

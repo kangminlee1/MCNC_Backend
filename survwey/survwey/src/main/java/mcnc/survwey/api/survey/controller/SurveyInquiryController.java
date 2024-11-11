@@ -19,9 +19,10 @@ public class SurveyInquiryController {
 
     private final SurveyInquiryService surveyInquiryService;
 
-    @GetMapping("/inquiry/{email}")
+    @GetMapping("/inquiry/created/{email}")
     public ResponseEntity<Map<String, List<UserCreatedSurveyDTO>>> inquiryUserCreatedSurveyList(@PathVariable(value = "email") String email) {
         List<UserCreatedSurveyDTO> userCreatedSurveyList = surveyInquiryService.getUserCreatedSurveyList(email);
         return ResponseEntity.ok(Collections.singletonMap("surveyList", userCreatedSurveyList));
     }
+
 }
