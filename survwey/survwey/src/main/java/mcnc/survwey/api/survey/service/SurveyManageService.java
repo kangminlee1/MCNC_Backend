@@ -14,7 +14,6 @@ import mcnc.survwey.domain.user.User;
 import mcnc.survwey.domain.user.UserService;
 import org.springframework.stereotype.Service;
 
-import static mcnc.survwey.global.config.SessionConst.LOGIN_USER;
 
 
 @Service

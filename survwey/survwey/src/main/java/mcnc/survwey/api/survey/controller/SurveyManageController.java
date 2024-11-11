@@ -9,6 +9,7 @@ import mcnc.survwey.api.survey.dto.CreateSurveyDTO;
 import mcnc.survwey.api.survey.service.SurveyManageService;
 import mcnc.survwey.domain.enums.QuestionType;
 import mcnc.survwey.domain.survey.Survey;
+import mcnc.survwey.global.config.SessionContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,14 +28,9 @@ public class SurveyManageController {
     private final SurveyManageService surveyManageService;
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createSurvey(@Valid @RequestBody CreateSurveyDTO createSurveyDTO,
-                                               HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session == null || session.getAttribute(LOGIN_USER) == null) {
-            return ResponseEntity.status(401).body(null);
-        }
-        try{
-            String userId = String.valueOf(session.getAttribute(LOGIN_USER));
+    public ResponseEntity<Object> createSurvey(@Valid @RequestBody CreateSurveyDTO createSurveyDTO) {
+        try {
+            String userId = SessionContext.getCurrentUser();
             Survey survey = surveyManageService.createSurveyWithDetails(createSurveyDTO, userId);
             return ResponseEntity.ok().body(survey);
         } catch (Exception e) {
