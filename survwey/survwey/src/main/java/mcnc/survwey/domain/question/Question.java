@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mcnc.survwey.domain.enums.QuestionType;
 import mcnc.survwey.domain.selection.Selection;
 import mcnc.survwey.domain.survey.Survey;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Table(name = "question")
 public class Question {
@@ -37,6 +39,11 @@ public class Question {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private QuestionType type;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    private List<Selection> selectionList = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

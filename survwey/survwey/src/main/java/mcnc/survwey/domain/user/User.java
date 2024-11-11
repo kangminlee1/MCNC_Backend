@@ -1,14 +1,18 @@
 package mcnc.survwey.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mcnc.survwey.domain.enums.Gender;
+import mcnc.survwey.domain.respond.Respond;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,4 +45,8 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    private List<Respond> respondList = new ArrayList<>();
 }
