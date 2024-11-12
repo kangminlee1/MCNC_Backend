@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
         name = "respond",
         uniqueConstraints = @UniqueConstraint(columnNames = {"surveyId", "userId"})
 )
+@Entity
 public class Respond {
 
     @Id

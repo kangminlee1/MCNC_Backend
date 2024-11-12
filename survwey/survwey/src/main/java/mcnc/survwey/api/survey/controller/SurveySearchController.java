@@ -14,7 +14,7 @@ import java.util.Collections;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("survey/")
 public class SurveySearchController {
 
     @Autowired
