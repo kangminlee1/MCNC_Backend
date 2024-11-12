@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@Entity
 @Table(
         name = "respond",
         uniqueConstraints = @UniqueConstraint(columnNames = {"surveyId", "userId"})

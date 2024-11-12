@@ -1,13 +1,18 @@
 package mcnc.survwey.domain.survey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mcnc.survwey.domain.question.Question;
+import mcnc.survwey.domain.respond.Respond;
 import mcnc.survwey.domain.user.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -38,6 +43,16 @@ public class Survey {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    private List<Question> questionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    @Builder.Default
+    private List<Respond> respondList = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
