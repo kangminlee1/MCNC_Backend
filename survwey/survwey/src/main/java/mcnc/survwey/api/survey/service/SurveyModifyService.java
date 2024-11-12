@@ -13,6 +13,7 @@ import mcnc.survwey.domain.survey.SurveyRepository;
 import mcnc.survwey.domain.survey.SurveyService;
 import mcnc.survwey.domain.user.User;
 import mcnc.survwey.domain.user.UserRepository;
+import mcnc.survwey.domain.user.UserService;
 import mcnc.survwey.global.exception.custom.CustomException;
 import mcnc.survwey.global.exception.custom.ErrorCode;
 import org.springframework.http.HttpStatus;
@@ -24,18 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class SurveyModifyService {
 
-    private final SurveyRepository surveyRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final SelectionService selectionService;
     private final QuestionService questionService;
     private final SurveyService surveyService;
     private final RespondService respondService;
 
     @Transactional
-    public Survey surveyModifyWithDetails(CreateSurveyDTO createSurveyDTO, Long surveyId) {
+    public Survey surveyModifyWithDetails(CreateSurveyDTO createSurveyDTO, Long surveyId, String userId) {
 
-        User updater = userRepository.findByEmail(createSurveyDTO.getEmail())
-                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.USER_NOT_FOUND_BY_EMAIL));
+        User updater = userService.findByUserId(userId);
 
         Respond respond = respondService.respondExist(surveyId);
         //답안이 작성이 되었는가 확인

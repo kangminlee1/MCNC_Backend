@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import mcnc.survwey.api.survey.dto.CreateSurveyDTO;
 import mcnc.survwey.api.survey.service.SurveyModifyService;
 import mcnc.survwey.domain.survey.Survey;
+import mcnc.survwey.global.config.SessionContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +23,8 @@ public class SurveyModifyController {
 
 
     public ResponseEntity<Object> surveyModify (@Valid @RequestBody CreateSurveyDTO createSurveyDTO, @PathVariable Long surveyId){
-
-        Survey survey = surveyModifyService.surveyModifyWithDetails(createSurveyDTO, surveyId);
+        String userId = SessionContext.getCurrentUser();
+        Survey survey = surveyModifyService.surveyModifyWithDetails(createSurveyDTO, surveyId, userId);
 
         return ResponseEntity.ok().body(survey);
     }
